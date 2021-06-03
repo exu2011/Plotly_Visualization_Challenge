@@ -45,5 +45,31 @@ Update the chart whenever a new sample is selected.
 
 
 // 0. Retrive data from sample json data
+
 // 1. Process the data
+
 // There should be one filteredResult whose sample id === id
+
+// Get the first and the only element in the filteredResult array
+
+// Grab values from the data json object to build the plots
+
+// Get the wfreq data by sample id:
+// let wfreq = Object.values(result)[6];
+ // Get the selected object
+
+ // 1. Create a horizontal bar chart to display the top 10 OTUs found in an individual
+   // colorscale: 'YlGnBu'
+// 3. Create the gauge chart (optional)
+// Function to build the gauge plot: 
+// Ref: https://plotly.com/javascript/indicator/
+// Grab values from the sample data json object to build the pulldown menu with a list of sample ids
+//extract the sample ids from the samples.json file, and use it to populate the pulldown menu
+// get the html's pulldown element
+// build the plots using the first sample id = 940
+ // display the default demoInfo table with the first ID = 940
+ // When user pick up a sample id from the pulldown menu, refresh the page with the new data associated with 
+// the new Sample ID. Please note, the function name is defined in the index.html: "onchange="optionChanged(this.value)"
+// end handlePulldownOptionChange()
+
+// Initialize the project dashboard
