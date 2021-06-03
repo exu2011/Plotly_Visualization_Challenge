@@ -31,11 +31,11 @@ function buildPlots(id) {
     let sampleData = data.samples;
 
     // There should be one filteredResult whose sample id === id
-    let filteredResult = sampleData.filter(sampleObject => sampleObject.id.toString() === id);
+    let filteredResult = sampleData.filter(testSubject => testSubject.id === id);
 
     // Get the first and the only element in the filteredResult array
     let result = filteredResult[0];
-    console.log("id = " + id);
+    console.log("The selected id = " + id);
     console.log(result)
 
     // console.log("The sample result: " + result);
@@ -46,11 +46,24 @@ function buildPlots(id) {
     let sample_values = result.sample_values;
 
     // Get the wfreq data by sample id:
+    // let wfreq = Object.values(result)[6];
+
+
     let metadata = data.metadata;
-    let filteredMetadata = metadata.filter(metaDataEntry => metaDataEntry.id === id);
-    let wfreq = filteredMetadata.wfreq;
-    console.log('------------ wfreq ------------');
-    console.log(wfreq);
+    console.log("Debug1");
+    console.log(metadata);
+
+    let filteredMetadata = metadata.filter(metaDataEntry => metaDataEntry.id.toString() == id);
+    console.log("Debug2: ID = " + id);
+    console.log(filteredMetadata);
+
+    // Get the selected object
+    let filteredMetadataObj = filteredMetadata[0];
+    console.log("Debug3: ID = " + id);
+    console.log(filteredMetadataObj);
+    let wfreq = filteredMetadataObj.wfreq;
+
+    console.log("wfreq: " + wfreq);
 
     //------------------------------------------------------------------------------------
     // 1. Create a horizontal bar chart to display the top 10 OTUs found in an individual
@@ -116,11 +129,14 @@ function buildPlots(id) {
 
     // Create a bubble chart
     Plotly.newPlot("bubble", bubbleTrace, bubbleLayout);
-  });
 
   
-  // Display the gauge chart: 
-  buildGaugeChart(wfreq);
+    //------------------------------------------------------------------------------------
+    // 3. Create the gauge chart (optional)
+    //------------------------------------------------------------------------------------
+    buildGaugeChart(wfreq);
+
+  });
 
 } // end buildPlots()
 
