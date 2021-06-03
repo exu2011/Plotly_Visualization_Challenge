@@ -24,7 +24,7 @@ function buildDemoInfoTable(id) {
 function buildPlots(id) {
   
   //-------------------------------------------
-  // 0. Retrive data from sample json data
+  // 0. Retrive data from samples.json
   //-------------------------------------------
   d3.json("samples.json").then((data) => {
     // 1. Process the data
@@ -44,23 +44,22 @@ function buildPlots(id) {
     let otu_ids = result.otu_ids;
     let otu_labels = result.otu_labels;
     let sample_values = result.sample_values;
+    // console.log("Debug 0:")
+    // console.log(otu_labels);
 
     // Get the wfreq data by sample id:
-    // let wfreq = Object.values(result)[6];
-
-
     let metadata = data.metadata;
-    console.log("Debug1");
-    console.log(metadata);
+    // console.log("Debug1");
+    // console.log(metadata);
 
     let filteredMetadata = metadata.filter(metaDataEntry => metaDataEntry.id.toString() == id);
-    console.log("Debug2: ID = " + id);
-    console.log(filteredMetadata);
+    // console.log("Debug2: ID = " + id);
+    // console.log(filteredMetadata);
 
     // Get the selected object
     let filteredMetadataObj = filteredMetadata[0];
-    console.log("Debug3: ID = " + id);
-    console.log(filteredMetadataObj);
+    // console.log("Debug3");
+    // console.log(filteredMetadataObj);
     let wfreq = filteredMetadataObj.wfreq;
 
     console.log("wfreq: " + wfreq);
@@ -84,7 +83,7 @@ function buildPlots(id) {
         color: 'light blue'
       },
       type: 'bar',
-      orientation: 'h'
+      orientation: 'h' // horizontal
     };
 
     // Create the data array for the bar plot
@@ -104,6 +103,7 @@ function buildPlots(id) {
     //------------------------------------------------------------------------------------
     // 2. Create a bubble chart that displays each sample
     //------------------------------------------------------------------------------------
+    // define the trace data
     let bubbleTrace = [
       {
         x: otu_ids,
@@ -119,12 +119,14 @@ function buildPlots(id) {
       }
     ];
 
+    // define the layout 
     let bubbleLayout = {
       title: "Bacteria Cultures Per Sample",
       xaxis: {title: "OTU ID"},
       height: 650,
       width: 1300, 
-      hovermode: "closest"
+      hovermode: "closest",
+      showlegend: false
     };
 
     // Create a bubble chart
@@ -134,80 +136,96 @@ function buildPlots(id) {
     //------------------------------------------------------------------------------------
     // 3. Create the gauge chart (optional)
     //------------------------------------------------------------------------------------
+    // Call the function buildGaugeChart, passing wfreq as a parameter.
     buildGaugeChart(wfreq);
 
   });
 
 } // end buildPlots()
 
-// Function to build the gauge plot: 
+//-----------------------------------------------------------------------
+// buildGaugeChart: 
+//   Function to build the gauge plot: 
+//   parameter: wfreq (wash frequency)
 // Ref: https://plotly.com/javascript/indicator/
+// Use https://htmlcolorcodes.com/ to help with color gradient for steps.
+// for axis: use dtick to define the tick frequency
+//-----------------------------------------------------------------------
 function buildGaugeChart(wfreq) {
+  // define gauge data trace: 
+  // Plot type: Plotly - indicator; 
   let data = [
     {
       type: "indicator",
-      mode: "gauge+number+delta",
+      mode: "gauge+number",
       value: wfreq,
-      title: { text: "Belly Button Washing Frequency", font: { size: 24 } },
+      title: { text: "Belly Button Washing Frequency", font: { size: 20 } },
       // delta: { reference: 400, increasing: { color: "RebeccaPurple" } },
       gauge: {
-        axis: { range: [null, 9], tickwidth: 1, tickcolor: "lightgreen" },
+        axis: { range: [null, 9], tickwidth: 1, tickcolor: "lightgreen", dtick: 1 },
         bar: { color: "darkgreen" },
         bgcolor: "white",
-        borderwidth: 2,
+        borderwidth: 1.5,
         bordercolor: "gray",
         steps: [
-          { range: [0, 1], color: "#83C9F7" },
-          { range: [1, 2], color: "#6ABBF1" },
-          { range: [2, 3], color: "#4FAAE6" },
-          { range: [3, 4], color: "#3587BE" },
-          { range: [4, 5], color: "#2A71A1" },
-          { range: [5, 6], color: "#20618E" },
-          { range: [6, 7], color: "#114F79" },
-          { range: [7, 8], color: "#084066" },
-          { range: [8, 9], color: "#052F4C" }
+          { range: [0, 1], color: "#DFECF5" },
+          { range: [1, 2], color: "#CFE1EE" },
+          { range: [2, 3], color: "#B8E7F6" },
+          { range: [3, 4], color: "#A1E0F5" },
+          { range: [4, 5], color: "#90D9F2" },
+          { range: [5, 6], color: "#83C9F7" },
+          { range: [6, 7], color: "#6ABBF1" },
+          { range: [7, 8], color: "#4FAAE6" },
+          { range: [8, 9], color: "#3587BE" }
         ],
         threshold: {
-          line: { color: "red", width: 4 },
+          line: { color: "darkred", width: 4 },
           thickness: 0.75,
-          value: 7
+          value: 2
         }
       }
     }
   ];
 
+  // Define gauge layout - plot size and margin
   let gaugeLayout = {
     height: 250,
     width: 350,
+    // tickmode = 'array',
+    // tickvals = [1, 2, 3, 4, 5, 6, 7, 8, 9],
     margin: {
       t: 0, 
       b: 0
     }
   };
 
+  // Create the gauge
   Plotly.newPlot("gauge", data, gaugeLayout);
 
 } // end buildGaugeChart
 
+//------------------------------------------------
+// init(): display the data with default id = 940
+//------------------------------------------------
 function init() {
 
   // Grab values from the sample data json object to build the pulldown menu with a list of sample ids
   d3.json("samples.json").then((sampleData) => {
-    //extract the sample ids from the samples.json file, and use it to populate the pulldown menu
+    //extract the sample ids one by one from the "names" section in the samples.json file, and populate the pulldown menu options
     sampleData.names.forEach((name) => {
       // console.log("Debug: " + name);
 
-      // get the html's pulldown element
+      // get the html's pulldown element, append each id name as an option to the pulldown menu
       d3.select("#selDataset")
         .append("option")
         .text(name)
         .property("value");      
     });
 
-    // build the plots using the first sample id = 940
+    // build the default plots using the first sample id = 940
     buildPlots(sampleData.names[0]);
 
-    // display the default demoInfo table with the first ID = 940
+    // display the default demoInfo table with the first sample ID = 940
     buildDemoInfoTable(sampleData.names[0]);
 
   });
@@ -221,7 +239,7 @@ function optionChanged(newSampleId) {
   buildDemoInfoTable(newSampleId);
   buildPlots(newSampleId);
 
-} // end handlePulldownOptionChange()
+} // end optionChanged()
 
 // Initialize the project dashboard
 init();
