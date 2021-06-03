@@ -31,3 +31,15 @@ You will need to modify the example gauge code to account for values ranging fro
 
 
 Update the chart whenever a new sample is selected.
+
+// Create a funcion to pull out demographics information from the metadata in samples.json
+  // filter demographic information by id parameter
+      // get the html element of the demographic info table
+       // Clear the existing data in the demographic info table
+       // Use Object.entries to add both key-value pair to the demoInfoTable
+       // end buildDemoInfoTable()
+
+
+// 0. Retrive data from sample json data
+// 1. Process the data
+// There should be one filteredResult whose sample id === id
