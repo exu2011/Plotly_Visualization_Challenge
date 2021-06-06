@@ -1,10 +1,8 @@
 # Plotly_Visualization_Challenge
 Belly Button Biodiversity
+Objectives: 
 Use the D3 library to read in samples.json.
-
-
 Create a horizontal bar chart with a dropdown menu to display the top 10 OTUs found in that individual.
-
 Use sample_values as the values for the bar chart.
 Use otu_ids as the labels for the bar chart.
 Use otu_labels as the hovertext for the chart.
@@ -28,15 +26,15 @@ Adapt the Gauge Chart from https://plot.ly/javascript/gauge-charts/ to plot the 
 
 
 You will need to modify the example gauge code to account for values ranging from 0 through 9.
-
-
 Update the chart whenever a new sample is selected.
 
-// Create a funcion to pull out demographics information from the metadata in samples.json
+Procedure:
+first I created docs folder and put all the index.html and app.js files into this folder so that we could deploy the webpage  on github.
 
-// filter demographic information by id parameter
+First, I create a function called  buildDemoInfoTable  to print out demographics info table for specific chosen id of the pulldown menu.  I name it sample.data
 
-// get the html element of the demographic info table
+
+then I filter demographic information by id parameter and get the html element of the demographic info table
 
 // Clear the existing data in the demographic info table
 
