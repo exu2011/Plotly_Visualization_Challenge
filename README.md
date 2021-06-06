@@ -29,39 +29,25 @@ You will need to modify the example gauge code to account for values ranging fro
 Update the chart whenever a new sample is selected.
 
 Procedure:
-first I created docs folder and put all the index.html and app.js files into this folder so that we could deploy the webpage  on github.
+first I created docs folder and put all the index.html and app.js files into this folder so that we could deploy the webpage  on github.  The deployed github webpage is  https://exu2011.github.io/Plotly_Visualization_Challenge/
 
-First, I create a function called  buildDemoInfoTable  to print out demographics info table for specific chosen id of the pulldown menu.  I name it sample.data
+1.  create a function called  "buildDemoInfoTable()"  to print out demographics info table for specific chosen id of the pulldown menu.  then I filtered demographic information by id parameter, get the html element of the demographic info table,  clear the existing data in the demographic info table, Use Object.entries to add both key-value pair to the demoInfoTable
 
+2. create a function "buildPlots()". This buildPlots function will create three plots for a specific sample id: 
+// Plot 1: horizontal bar chart for top ten culture. The goal is to to create a horizontal bar chart to display the top 10 OTUs found in an individual.
+// Plot 2: gauge  of washing frenqency
+// Plot 3: bubble chart for specific id. Create a bubble chart that displays each sample. define the trace data, define the layout, create a bubble chart
+ 
+3. Create the gauge chart (optional)
+  I created a function named "buildGaugeChart()" to build the gauge plot: 
+  I referenced the code for indicator from https://plotly.com/javascript/indicator/
+  I used html https://htmlcolorcodes.com/ to help with color gradient for steps.
+  For axis: use dtick to define the tick frequency
 
-then I filter demographic information by id parameter and get the html element of the demographic info table
-
-// Clear the existing data in the demographic info table
-
-// Use Object.entries to add both key-value pair to the demoInfoTable
-// end buildDemoInfoTable()
-
-
-// 0. Retrive data from sample json data
-
-// 1. Process the data
-
-// There should be one filteredResult whose sample id === id
-
-// Get the first and the only element in the filteredResult array
-
-// Grab values from the data json object to build the plots
-
-// Get the wfreq data by sample id:
-// let wfreq = Object.values(result)[6];
-// Get the selected object
-
-// 1. Create a horizontal bar chart to display the top 10 OTUs found in an individual
-// colorscale: 'YlGnBu'
-// 3. Create the gauge chart (optional)
-
-// Function to build the gauge plot: 
-// Ref: https://plotly.com/javascript/indicator/
+4. Initialize the project dashboard by calling a function called init(). 
+    In the init(), extract the sample ids one by one from the "names" section in the samples.json file, and populate the pulldown menu options
+    build the default plots using the first sample id = 940
+    display the default demoInfo table with the first sample ID = 940
 
 // Grab values from the sample data json object to build the pulldown menu with a list of sample ids
 
@@ -74,4 +60,3 @@ then I filter demographic information by id parameter and get the html element o
 
 // end handlePulldownOptionChange()
 
-// Initialize the project dashboard
